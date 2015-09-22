@@ -5,6 +5,12 @@ var morgan = require('morgan');//morgan은 모든 request를 보여준다.
 var mongoose = require('mongoose');
 var port = process.env.PORT || 8080;//port 설정.
 
+var User = require('./app/models/user');
+
+mongoose.connect('mongodb://127.0.0.1/crm', function(){
+	console.log("mongodb connected!");
+});
+
 //body parser를 이용해 포스트로 요청(request)되는 정보를 잡아온다.
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
