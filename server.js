@@ -47,6 +47,27 @@ apiRouter.use(function(req, res, next){
 	next();//다시 하던 라우팅 일 계속해라. (미들웨어가 더 있으면 그거 계속하고.)
 });
 
+apiRouter.route('/users')
+	//create a user
+	.post(function(req, res){
+		var user = new User();
+
+		user.name = req.body.name;
+		user.username = req.body.username;
+		user.password = req.body.password;
+
+		//save the user and check for errors
+		user.save(function(err){
+			if (err){
+				if (err.code == 11000){
+					return res.json({success: false, message: 'A user with that username already exists.'});
+				}
+				else { return res.send(err); }
+			}
+			res.json({message: 'User created!'});
+		});
+	});
+
 //test route
 apiRouter.get('/', function(req, res){
   res.json({ message: "hello! Can you hear me?"});
