@@ -34,7 +34,7 @@ app.get('/', function(req, res){
 var apiRouter = express.Router();
 
 //***매우 중요 ***
-//모든 리퀘스트에 대한 미들웨어 설정.
+//***모든 리퀘스트에 대한 미들웨어 설정***
 //이러한 미들웨어를 설정하면 굉장히 강력해진다. 모든 요청이 안전한지 검증할 수 있기 때문이다.
 //또한 로그 통계 분석을 하는 미들웨어를 추가할 수도 있다.
 //무엇보다도 인증 기능이 가장 중요할 것이다. 유저가 적절한 토큰을 가지고 있는지 인증할 수 있다.
@@ -70,7 +70,7 @@ apiRouter.route('/users')
 	//get all the users at '/api/users'
 	.get(function(req, res){
 		User.find(function(err, users){
-			if (err){ res.send(err); }
+			if (err){ return res.send(err); }
 
 			res.json(users);
 		});
@@ -79,10 +79,33 @@ apiRouter.route('/users')
 apiRouter.route('/users/:user_id')
 	.get(function(req, res){
 		User.findById(req.params.user_id, function(err, user){
-			if (err) { res.send(err); }
+			if (err) { return res.send(err); }
 
 			res.json(user);
 		});
+	})
+	.put(function(req, res){
+		User.findById(req.params.user_id, function(err, user){
+			if (err) { return res.send(err); }
+
+			if (req.body.name) { user.name = req.body.name; }//이렇게 해야, 업데이트 하지 않는 필드도
+			if (req.body.username) { user.username = req.body.username; }//공백으로 업데이트 되지 않는다.
+			if (req.body.password) { user.password = req.body.password; }//여기도 마찬가지.
+
+			user.save(function(err){
+				if (err) { return res.send(err); }
+
+				res.json({message: 'User updated!'});
+			});
+		});
+	})
+	.delete(function(req, res){
+		User.remove(
+			{ _id: req.params.user_id }, function(err, user){
+				if (err) { return res.send(err); }
+
+				res.json({ message: 'Successfully deleted!'});
+			});
 	});
 
 //test route
