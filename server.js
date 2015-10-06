@@ -37,6 +37,48 @@ app.get('/', function(req, res){
 //익스프레스 라우터 인스턴스 호출.
 var apiRouter = express.Router();
 
+apiRouter.post('/authenticate', function(req, res){
+	//jwt 인증 토큰을 생성한다.
+	//이 인증 post route 설정 위치가 중요하다.
+	//바로 다음에 나오는 인증 미들웨어를 설정하기 전에 이 토큰 생성이 있어야 하는 것이다.
+
+	User.findOne({ username: req.body.username })
+			.select('name username password')
+			.exec(function(err, user){
+				if (err) { throw err; }
+
+				if (!user){
+					res.json({
+						success: false,
+						message: 'Authentication failed. User not found.'
+					});
+				} else if (user){
+					var validPassword = user.comparePassword(req.body.password);
+					if (!validPassword){
+						res.json({
+							success: false,
+							message: 'Authentication failed. Password not matched.'
+						});
+					} else {
+						//username과 password가 모두 맞으므로 이제 토큰을 생성한다.
+						var token = jwt.sign({
+							name: user.name,
+							username: user.username
+						}, secret, {
+							expiresInMinutes: 1440 //24 hours
+						});//토큰 생성 끝.
+						//이제 토큰을 json으로 반환.
+						res.json({
+							success: true,
+							message: 'Here is your token!',
+							token: token
+						});
+					}
+				}
+			});
+});
+
+
 //***매우 중요 ***
 //***모든 리퀘스트에 대한 미들웨어 설정***
 //이러한 미들웨어를 설정하면 굉장히 강력해진다. 모든 요청이 안전한지 검증할 수 있기 때문이다.
