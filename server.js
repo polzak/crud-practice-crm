@@ -86,11 +86,34 @@ apiRouter.post('/authenticate', function(req, res){
 //무엇보다도 인증 기능이 가장 중요할 것이다. 유저가 적절한 토큰을 가지고 있는지 인증할 수 있다.
 apiRouter.use(function(req, res, next){
 	//누군가 로그한다.
-	console.log('Somebody just came to our app!');
+	//console.log('Somebody just came to our app!');
 
 	//이후 이 부분에서 인증 설정을 할 것이다.
+	//그렇다. 여기서 jwt token을 검사할 것이다.
+	var token = req.body.token || req.query.token || req.headers['x-access-token'];
 
-	next();//다시 하던 라우팅 일 계속해라. (미들웨어가 더 있으면 그거 계속하고.)
+	//decode the token
+	if (token){
+		jwt.verify(token, secret, function(err, decoded){
+			if (err){
+				return res.status(403).send({
+					success: false,
+					message: 'Failed to authenticate token.'
+				});
+			} else {
+				req.decoded = decoded; //앞으로 계속 써야 하기 때문에 저장해 놓는다.
+
+				next();//하던 일 계속하자.
+							//다시 하던 라우팅 일 계속해라. (미들웨어가 더 있으면 그거 계속하고.)
+			}
+		});
+	} else {//만약 토큰이 없다면
+		return res.status(403).send({
+			success: false,
+			message: 'No token provided.'
+		});
+	}
+	//이젠 여기에 next();가 있을 필요가 없다.
 });
 
 apiRouter.route('/users')
