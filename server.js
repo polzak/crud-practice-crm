@@ -182,6 +182,10 @@ apiRouter.get('/', function(req, res){
   res.json({ message: "hello! Can you hear me?"});
 });
 
+apiRouter.get('/me', function(req, res){//user 개인의 정보를 보여주는 라우트.
+	res.send(req.decoded);								//나중에 프론트엔드에서 써먹기 유용함.
+});
+
 app.use('/api', apiRouter);
 
 app.listen(port);
