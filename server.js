@@ -4,14 +4,12 @@ var bodyParser = require('body-parser');
 var morgan = require('morgan');//morgan은 모든 request를 보여준다.
 var mongoose = require('mongoose');
 var jwt = require('jsonwebtoken');//인증용 jwt 설정.
-var secret = 'secret';//jwt token을 암호화하기 위해 붙이는 암호 키.
-											//발급자가 원하는 단어로 비밀 키를 만들면 된다.
-											//이 비밀 키 덕분에, token을 복제하기 어렵다.
-var port = process.env.PORT || 8080;//port 설정.
+var config = require('./config');
 
+var secret = config.secret;
 var User = require('./app/models/user');
 
-mongoose.connect('mongodb://127.0.0.1/crm', function(){
+mongoose.connect(config.database, function(){
 	console.log("mongodb connected!");
 });
 
@@ -188,5 +186,5 @@ apiRouter.get('/me', function(req, res){//user 개인의 정보를 보여주는 
 
 app.use('/api', apiRouter);
 
-app.listen(port);
-console.log('Magic happens on port ' + port);
+app.listen(config.port);//port를 config.js에서 설정한 다음 여기로 직접 불러옴.
+console.log('Magic happens on port ' + config.port);
