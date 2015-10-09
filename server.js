@@ -28,13 +28,15 @@ app.use(function(req, res, next){
 
 app.use(morgan('dev'));
 
-//Routes for API
-app.get('/', function(req, res){
-  res.send('Welcome to the home page!');
-});
-
 var apiRoutes = require('./app/routes/api')(app, express); //'api.js'에서 리턴해 온다.
 app.use('/api', apiRoutes);
+
+//catchall Route: node가 핸들링 하지 않는 모든 리퀘스트를 angular에 넘긴다.
+//이걸 apiRoutes보다 앞에 설정해버리면, apiRoutes가 해야 할 일까지도 전부 얘가 다 가져가버리게 된다.
+//그래서 apiRoutes보다 뒤에 설정해 준다. 이것이 catchall Route이다.
+app.get('*', function(req, res){
+	res.sendFile(path.join(__dirname + 'public/app/views/index.html'));
+});
 
 app.listen(config.port);//port를 config.js에서 설정한 다음 여기로 직접 불러옴.
 console.log('Magic happens on port ' + config.port);
