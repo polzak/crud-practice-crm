@@ -4,15 +4,7 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var morgan = require('morgan');//morgan은 모든 request를 보여준다.
 var mongoose = require('mongoose');
-//var jwt = require('jsonwebtoken');//인증용 jwt 설정.
 var config = require('./config');
-
-//var secret = config.secret;
-//var User = require('./app/models/user');
-
-mongoose.connect(config.database, function(){
-	console.log("mongodb connected!");
-});
 
 //body parser를 이용해 포스트로 요청(request)되는 정보를 파싱한다.
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -28,6 +20,14 @@ app.use(function(req, res, next){
 
 app.use(morgan('dev'));
 
+//데이터베이스 연결은 여기서부터 시작되어도 되나 보다. 라우팅을 하기 전이기만 하면 되나 보다.
+mongoose.connect(config.database, function(){
+	console.log("mongodb connected!");
+});
+
+//모든 static 파일들을 위한 로케이션 지정.
+app.use(express.static(__dirname + '/public'));
+
 var apiRoutes = require('./app/routes/api')(app, express); //'api.js'에서 리턴해 온다.
 app.use('/api', apiRoutes);
 
@@ -35,7 +35,7 @@ app.use('/api', apiRoutes);
 //이걸 apiRoutes보다 앞에 설정해버리면, apiRoutes가 해야 할 일까지도 전부 얘가 다 가져가버리게 된다.
 //그래서 apiRoutes보다 뒤에 설정해 준다. 이것이 catchall Route이다.
 app.get('*', function(req, res){
-	res.sendFile(path.join(__dirname + 'public/app/views/index.html'));
+	res.sendFile(path.join(__dirname + '/public/app/views/index.html'));
 });
 
 app.listen(config.port);//port를 config.js에서 설정한 다음 여기로 직접 불러옴.
