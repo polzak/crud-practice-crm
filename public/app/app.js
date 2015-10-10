@@ -1,7 +1,8 @@
-angular.module('crmapp', [])
-  .controller('mainController', function(){
-    var vm = this;
-
-    vm.users = "Hello Angular";
-
-  });
+angular.module('userApp', [
+  'ngAnimate',
+  'app.routes',
+  'userService',
+  'authService',
+  'mainCtrl',
+  'userCtrl'
+]);
