@@ -5,3 +5,7 @@ main {
 header .navbar {
   border-radius: 0;
 }
+
+button a, button a:hover {
+  color: #fff;
+}
