@@ -5,10 +5,8 @@ angular.module('app.routes', ['ngRoute'])
     $routeProvider
 
       .when('/', {
-        templateUrl: '/app/views/pages/home.html',
-        controller: 'homeController',
-        controllerAs: 'home'
-      })
+        templateUrl: '/app/views/pages/home.html'
+      });
 
        $locationProvider.html5Mode(true);
   });
