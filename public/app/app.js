@@ -1,5 +1,11 @@
-angular.module('userApp', [])
+angular.module('userApp', ['app.routes'])
+
   .controller('mainController', function(){
     var vm = this;
-    vm.greet = "Hello";
+    vm.greet = "Hello Angular";
+  })
+
+  .controller('homeController', function(){
+    var vm = this;
+    
   });
