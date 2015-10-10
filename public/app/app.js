@@ -1,8 +1,5 @@
-angular.module('userApp', [
-  'ngAnimate',
-  'app.routes',
-  'userService',
-  'authService',
-  'mainCtrl',
-  'userCtrl'
-]);
+angular.module('userApp', [])
+  .controller('mainController', function(){
+    var vm = this;
+    vm.greet = "Hello";
+  });
