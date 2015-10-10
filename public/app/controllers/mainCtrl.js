@@ -1,4 +1,4 @@
-angular.module('mainCtrl', [])
+angular.module('mainCtrl', []) //여기에 authService를 주입해야 하는 것 아님? 나중에 오류 시 체크할 것.
 
   .controller('mainController', function($rootScope, $location, Auth){//3번째 파라미터는 Auth factory.
     var vm = this;
