@@ -1,4 +1,6 @@
 angular.module('userApp', [
   'app.routes',
-  'mainCtrl'
+  'mainCtrl',
+  'authService'
+
 ]);

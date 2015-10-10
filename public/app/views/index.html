@@ -16,11 +16,12 @@
   <script src="/app/app.js"></script>
   <script src="/app/app.routes.js"></script>
   <script src="/app/controllers/mainCtrl.js"></script>
+  <script src="/app/services/authService.js"></script>
 
 </head>
 <body ng-app="userApp" ng-controller="mainController as main">
   <div class="container">
-
+    {{ main.loggedIn }}
     <div ng-view></div>
 
   </div>

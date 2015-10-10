@@ -33,7 +33,7 @@ angular.module('authService', [])
     // 4) 유저 정보 가져오기
     authFactory.getUser = function(){
       if (AuthToken.getToken()){
-        return $http.get('/api/me');
+        return $http.get('/api/me'); //만약 캐시하고 싶다면 return $http.get('/api/me', { cache: true });
       } else {
         return $q.reject({ message: 'User has no token.' });
       }
