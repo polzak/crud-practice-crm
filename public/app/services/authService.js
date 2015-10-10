@@ -5,9 +5,39 @@ angular.module('authService', [])
     var authFactory = {};
 
     // 1) 로그인
+    authFactory.login = function(username, password){
+      return $http.post('/api/authenticate', {
+        username: username,
+        password: password
+      })
+        .success(function(data){
+          AuthToken.setToken(data.token);
+          return data;
+        });
+    };
+
     // 2) 로그아웃
+    authFactory.logout = function(){
+      AuthToken.setToken();
+    };
+
     // 3) 로그인 상태인지 체크
+    authFactory.isLoggedIn = function(){
+      if (AuthToken.getToken()){
+        return true;
+      } else {
+        return false;
+      }
+    };
+
     // 4) 유저 정보 가져오기
+    authFactory.getUser = function(){
+      if (AuthToken.getToken()){
+        return $http.get('/api/me');
+      } else {
+        return $q.reject({ message: 'User has no token.' });
+      }
+    };
 
     return authFactory;
   })
