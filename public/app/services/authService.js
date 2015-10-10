@@ -17,8 +17,19 @@ angular.module('authService', [])
     var authTokenFactory = {};
 
     // 1) 토큰 가져오기
+    authTokenFactory.getToken = function(){
+      return $window.localStorage.getItem('token');
+    };
+
     // 2) 토큰 설정
     // 3) 토큰 폐기
+    authTokenFactory.setToken = function(token){
+      if (token){
+        $window.localStorage.setItem('token', token);
+      } else {
+        $window.localStorage.removeItem('token');
+      }
+    };
 
     return authTokenFactory;
   })
