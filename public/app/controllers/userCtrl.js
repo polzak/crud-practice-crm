@@ -3,4 +3,12 @@ angular.module('userCtrl', ['userService'])//userService를 주입한 후
 
     var vm = this;
 
+    vm.processing = true;
+
+    User.all()
+      .success(function(data){
+        vm.processing = false;
+        vm.users = data;
+      });
+
   });

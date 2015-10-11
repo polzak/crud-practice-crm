@@ -1,7 +1,9 @@
 angular.module('userApp', [
   'app.routes',
   'mainCtrl',
-  'authService'
+  'authService',
+  'userCtrl',
+  'userService'
 
 ])
   .config(function($httpProvider){
