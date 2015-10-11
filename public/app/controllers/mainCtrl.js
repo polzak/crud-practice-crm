@@ -16,9 +16,20 @@ angular.module('mainCtrl', []) //여기에 authService를 주입해야 하는 �
     });
 
     vm.doLogin = function(){
+      vm.processing = true;//processing icon shown
+
+      vm.error = '';//error message 초기화
+
       Auth.login(vm.loginData.username, vm.loginData.password)//파라미터는 로그인 페이지에서 가져온다.
         .success(function(data){
-          $location.path('/users');
+          vm.processing = false;//processing icon hidden
+
+          if (data.success){
+            $location.path('/users');
+          } else {
+            vm.error = data.message;
+          }
+
         });
     };
 
