@@ -11,4 +11,19 @@ angular.module('userCtrl', ['userService'])//userService를 주입한 후
         vm.users = data;
       });
 
+    vm.deleteUser = function(id){
+      
+      vm.processing = true;
+
+      User.delete(id)
+        .success(function(data){
+          User.all()
+            .success(function(data){
+              vm.processing = false;
+              vm.users = data;
+            });
+        });
+    };
+
+
   });
