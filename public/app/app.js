@@ -3,8 +3,8 @@ angular.module('userApp', [
   'mainCtrl',
   'authService',
   'userCtrl',
-  'userService'
-
+  'userService',
+  'ngAnimate'
 ])
   .config(function($httpProvider){
       $httpProvider.interceptors.push('AuthInterceptor');

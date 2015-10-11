@@ -30,3 +30,12 @@ button a, button a:hover {
   from { -moz-transform:rotate(0deg); }
   to { -moz-transform:rotate(360deg); }
 }
+
+/* ng-animation
+ng-show와 ng-hide에 애니메이션을 더해줄 때에는,
+클래스 이름 뒤에 .ng-hide-add 혹은 .ng-hide-remove를 붙여줘야 한다. 상황에 따라 맞게. */
+.show-hide-message.ng-hide-remove {
+  -webkit-animation:zoomIn 0.3s both ease;
+  -moz-animation:zoomIn 0.3s both ease;
+  animation:zoomIn 0.3s both ease;
+}
